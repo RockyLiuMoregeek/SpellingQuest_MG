@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 拼字大明星 - 自然發音複習網</title>
+    <!-- 引入 React 與 TailwindCSS -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Comic Sans MS', 'Microsoft JhengHei', sans-serif; background-color: #f0f9ff; }
+        .card-container { perspective: 1000px; }
+        .btn-press:active { transform: scale(0.95); }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // 完整 225 個單字的 JSON 資料庫
+        const wordsData = [
+  {"id": "072", "word": "back", "translation": "背部；後面", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "1. 短母音 a (/æ/)"},
+  {"id": "188", "word": "band", "translation": "樂團；帶子", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "1. 短母音 a (/æ/)"},
+  {"id": "163", "word": "bank", "translation": "銀行；河岸", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "1. 短母音 a (/æ/)"},
+  {"id": "051", "word": "fact", "translation": "事實", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "1. 短母音 a (/æ/)"},
+  {"id": "110", "word": "gravity", "translation": "重力", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "1. 短母音 a (/æ/)"},
+  {"id": "046", "word": "habitat", "translation": "棲息地", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "1. 短母音 a (/æ/)"},
+  {"id": "064", "word": "ladder", "translation": "梯子", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "1. 短母音 a (/æ/)"},
+  {"id": "178", "word": "land", "translation": "土地；陸地", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "1. 短母音 a (/æ/)"},
+  {"id": "187", "word": "mask", "translation": "面具", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "1. 短母音 a (/æ/)"},
+  {"id": "041", "word": "pants", "translation": "長褲", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "1. 短母音 a (/æ/)"},
+  {"id": "157", "word": "plastic", "translation": "塑膠", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "1. 短母音 a (/æ/)"},
+  {"id": "077", "word": "correct", "translation": "正確的；改正", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "2. 短母音 e (/ɛ/)"},
+  {"id": "129", "word": "healthy", "translation": "健康的", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "2. 短母音 e (/ɛ/)"},
+  {"id": "112", "word": "recommend", "translation": "推薦", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "2. 短母音 e (/ɛ/)"},
+  {"id": "135", "word": "select", "translation": "選擇", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "2. 短母音 e (/ɛ/)"},
+  {"id": "223", "word": "self", "translation": "自己", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "2. 短母音 e (/ɛ/)"},
+  {"id": "204", "word": "tennis", "translation": "網球", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "2. 短母音 e (/ɛ/)"},
+  {"id": "192", "word": "twenty", "translation": "二十", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "2. 短母音 e (/ɛ/)"},
+  {"id": "078", "word": "difficult", "translation": "困難的", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "3. 短母音 i (/ɪ/)"},
+  {"id": "012", "word": "history", "translation": "歷史", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "3. 短母音 i (/ɪ/)"},
+  {"id": "038", "word": "if", "translation": "如果", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "3. 短母音 i (/ɪ/)"},
+  {"id": "084", "word": "interest", "translation": "興趣；使感興趣", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "3. 短母音 i (/ɪ/)"},
+  {"id": "053", "word": "sink", "translation": "水槽；下沉", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "3. 短母音 i (/ɪ/)"},
+  {"id": "131", "word": "slippery", "translation": "滑的", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "3. 短母音 i (/ɪ/)"},
+  {"id": "205", "word": "strip", "translation": "長條；剝去", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "3. 短母音 i (/ɪ/)"},
+  {"id": "067", "word": "visit", "translation": "參觀；拜訪", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "3. 短母音 i (/ɪ/)"},
+  {"id": "171", "word": "body", "translation": "身體", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "4. 短母音 o (/ɑ/ 或 /ɒ/)"},
+  {"id": "186", "word": "boxes", "translation": "盒子（複數）", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "4. 短母音 o (/ɑ/ 或 /ɒ/)"},
+  {"id": "203", "word": "drop", "translation": "掉落；滴", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "4. 短母音 o (/ɑ/ 或 /ɒ/)"},
+  {"id": "022", "word": "odd", "translation": "奇怪的", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "4. 短母音 o (/ɑ/ 或 /ɒ/)"},
+  {"id": "116", "word": "solve", "translation": "解決", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "4. 短母音 o (/ɑ/ 或 /ɒ/)"},
+  {"id": "177", "word": "strong", "translation": "強壯的", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "4. 短母音 o (/ɑ/ 或 /ɒ/)"},
+  {"id": "062", "word": "country", "translation": "國家；鄉村", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "5. 短母音 u (/ʌ/)"},
+  {"id": "025", "word": "understand", "translation": "了解", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "5. 短母音 u (/ʌ/)"},
+  {"id": "061", "word": "unhappy", "translation": "不開心的", "category": "1. 短母音家族 (Short Vowels)", "subcategory": "5. 短母音 u (/ʌ/)"},
+  {"id": "037", "word": "classmate", "translation": "同班同學", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 a (a_e):"},
+  {"id": "182", "word": "grade", "translation": "年級；成績", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 a (a_e):"},
+  {"id": "040", "word": "space", "translation": "空間", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 a (a_e):"},
+  {"id": "066", "word": "taste", "translation": "味道；品嚐", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 a (a_e):"},
+  {"id": "114", "word": "waves", "translation": "波浪（複數）", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 a (a_e):"},
+  {"id": "097", "word": "alive", "translation": "活著的", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 i (i_e):"},
+  {"id": "032", "word": "climate", "translation": "氣候", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 i (i_e):"},
+  {"id": "140", "word": "decide", "translation": "決定", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 i (i_e):"},
+  {"id": "201", "word": "describe", "translation": "描述", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 i (i_e):"},
+  {"id": "158", "word": "excited", "translation": "興奮的", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 i (i_e):"},
+  {"id": "013", "word": "striving", "translation": "努力奮鬥的", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 i (i_e):"},
+  {"id": "089", "word": "twice", "translation": "兩次", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 i (i_e):"},
+  {"id": "134", "word": "broke", "translation": "打破（過去式）", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 o (o_e):"},
+  {"id": "055", "word": "envelope", "translation": "信封", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 o (o_e):"},
+  {"id": "189", "word": "homework", "translation": "家庭作業", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 o (o_e):"},
+  {"id": "207", "word": "notebook", "translation": "筆記本", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 o (o_e):"},
+  {"id": "173", "word": "roses", "translation": "玫瑰花（複數）", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 o (o_e):"},
+  {"id": "126", "word": "excuse", "translation": "原諒；藉口", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 u (u_e):"},
+  {"id": "212", "word": "volume", "translation": "音量；體積", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 u (u_e):"},
+  {"id": "052", "word": "airplane", "translation": "飛機", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 a (ai, ay, aigh):"},
+  {"id": "151", "word": "explain", "translation": "解釋", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 a (ai, ay, aigh):"},
+  {"id": "156", "word": "maybe", "translation": "也許", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 a (ai, ay, aigh):"},
+  {"id": "128", "word": "paint", "translation": "油漆；繪畫", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 a (ai, ay, aigh):"},
+  {"id": "087", "word": "raise", "translation": "舉起；提高", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 a (ai, ay, aigh):"},
+  {"id": "145", "word": "straight", "translation": "筆直的；直接地", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 a (ai, ay, aigh):"},
+  {"id": "070", "word": "waitress", "translation": "女服務生", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 a (ai, ay, aigh):"},
+  {"id": "105", "word": "agree", "translation": "同意", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 e (ee, ea, ie, ei):"},
+  {"id": "168", "word": "degree", "translation": "程度；學位", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 e (ee, ea, ie, ei):"},
+  {"id": "141", "word": "each", "translation": "每一個", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 e (ee, ea, ie, ei):"},
+  {"id": "184", "word": "east", "translation": "東方", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 e (ee, ea, ie, ei):"},
+  {"id": "036", "word": "fleece", "translation": "羊毛；刷毛布", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 e (ee, ea, ie, ei):"},
+  {"id": "083", "word": "heat", "translation": "熱；加熱", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 e (ee, ea, ie, ei):"},
+  {"id": "213", "word": "leader", "translation": "領導者", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 e (ee, ea, ie, ei):"},
+  {"id": "120", "word": "neither", "translation": "兩者都不", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 e (ee, ea, ie, ei):"},
+  {"id": "003", "word": "nineteen", "translation": "十九", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 e (ee, ea, ie, ei):"},
+  {"id": "197", "word": "piece", "translation": "一片；一塊", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 e (ee, ea, ie, ei):"},
+  {"id": "094", "word": "repeat", "translation": "重複", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 e (ee, ea, ie, ei):"},
+  {"id": "085", "word": "seem", "translation": "似乎", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 e (ee, ea, ie, ei):"},
+  {"id": "088", "word": "sneezing", "translation": "打噴嚏（進行式）", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 e (ee, ea, ie, ei):"},
+  {"id": "199", "word": "speak", "translation": "說話", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 e (ee, ea, ie, ei):"},
+  {"id": "147", "word": "speech", "translation": "演講；言語", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 e (ee, ea, ie, ei):"},
+  {"id": "057", "word": "weekend", "translation": "週末", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 e (ee, ea, ie, ei):"},
+  {"id": "200", "word": "cheer", "translation": "歡呼；加油", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 e (ee, ea, ie, ei):"},
+  {"id": "060", "word": "libraries", "translation": "圖書館（複數）", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 i (ie):"},
+  {"id": "026", "word": "crow", "translation": "烏鴉", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 o (oa, oe, ow):"},
+  {"id": "069", "word": "follow", "translation": "跟隨", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 o (oa, oe, ow):"},
+  {"id": "092", "word": "railroad", "translation": "鐵路", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 o (oa, oe, ow):"},
+  {"id": "191", "word": "tomatoes", "translation": "番茄（複數）", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 o (oa, oe, ow):"},
+  {"id": "133", "word": "avenue", "translation": "大道；林蔭道", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 u (ue, ui):"},
+  {"id": "063", "word": "continue", "translation": "繼續", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 u (ue, ui):"},
+  {"id": "016", "word": "fuel", "translation": "燃料", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 u (ue, ui):"},
+  {"id": "082", "word": "suit", "translation": "西裝；適合", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 u (ue, ui):"},
+  {"id": "058", "word": "neighbor", "translation": "鄰居", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 a:"},
+  {"id": "225", "word": "paper", "translation": "紙；報紙", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 a:"},
+  {"id": "218", "word": "lady", "translation": "女士", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 e:"},
+  {"id": "224", "word": "light", "translation": "光；輕的", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 i:"},
+  {"id": "148", "word": "pilot", "translation": "飛行員", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 i:"},
+  {"id": "138", "word": "remind", "translation": "提醒", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 i:"},
+  {"id": "006", "word": "tiny", "translation": "極小的", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 i:"},
+  {"id": "219", "word": "humid", "translation": "潮濕悶熱的", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 u:"},
+  {"id": "170", "word": "newscast", "translation": "新聞播報", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 u:"},
+  {"id": "008", "word": "tuna", "translation": "鮪魚", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 u:"},
+  {"id": "031", "word": "usual", "translation": "平常的", "category": "2. 長母音與複合母音家族", "subcategory": "長母音 u:"},
+  {"id": "028", "word": "amount", "translation": "數量；總額", "category": "3. 雙母音與特殊母音家族 (Diphthongs & Special Vowels)", "subcategory": "ou / ow (/aʊ/ 或 /oʊ/)"},
+  {"id": "137", "word": "couch", "translation": "沙發", "category": "3. 雙母音與特殊母音家族 (Diphthongs & Special Vowels)", "subcategory": "ou / ow (/aʊ/ 或 /oʊ/)"},
+  {"id": "062", "word": "country", "translation": "國家；鄉村", "category": "3. 雙母音與特殊母音家族 (Diphthongs & Special Vowels)", "subcategory": "ou / ow (/aʊ/ 或 /oʊ/)"},
+  {"id": "026", "word": "crow", "translation": "烏鴉", "category": "3. 雙母音與特殊母音家族 (Diphthongs & Special Vowels)", "subcategory": "ou / ow (/aʊ/ 或 /oʊ/)"},
+  {"id": "069", "word": "follow", "translation": "跟隨", "category": "3. 雙母音與特殊母音家族 (Diphthongs & Special Vowels)", "subcategory": "ou / ow (/aʊ/ 或 /oʊ/)"},
+  {"id": "155", "word": "fountain", "translation": "噴泉", "category": "3. 雙母音與特殊母音家族 (Diphthongs & Special Vowels)", "subcategory": "ou / ow (/aʊ/ 或 /oʊ/)"},
+  {"id": "029", "word": "ground", "translation": "地面", "category": "3. 雙母音與特殊母音家族 (Diphthongs & Special Vowels)", "subcategory": "ou / ow (/aʊ/ 或 /oʊ/)"},
+  {"id": "165", "word": "mouse", "translation": "老鼠", "category": "3. 雙母音與特殊母音家族 (Diphthongs & Special Vowels)", "subcategory": "ou / ow (/aʊ/ 或 /oʊ/)"},
+  {"id": "068", "word": "thousand", "translation": "一千", "category": "3. 雙母音與特殊母音家族 (Diphthongs & Special Vowels)", "subcategory": "ou / ow (/aʊ/ 或 /oʊ/)"},
+  {"id": "007", "word": "aunt", "translation": "阿姨；姑姑", "category": "3. 雙母音與特殊母音家族 (Diphthongs & Special Vowels)", "subcategory": "au / aw (/ɔ/)"},
+  {"id": "015", "word": "caught", "translation": "抓住（過去式）", "category": "3. 雙母音與特殊母音家族 (Diphthongs & Special Vowels)", "subcategory": "au / aw (/ɔ/)"},
+  {"id": "130", "word": "daughter", "translation": "女兒", "category": "3. 雙母音與特殊母音家族 (Diphthongs & Special Vowels)", "subcategory": "au / aw (/ɔ/)"},
+  {"id": "056", "word": "dawn", "translation": "黎明", "category": "3. 雙母音與特殊母音家族 (Diphthongs & Special Vowels)", "subcategory": "au / aw (/ɔ/)"},
+  {"id": "122", "word": "drawer", "translation": "抽屜", "category": "3. 雙母音與特殊母音家族 (Diphthongs & Special Vowels)", "subcategory": "au / aw (/ɔ/)"},
+  {"id": "159", "word": "laugh", "translation": "笑", "category": "3. 雙母音與特殊母音家族 (Diphthongs & Special Vowels)", "subcategory": "au / aw (/ɔ/)"},
+  {"id": "132", "word": "laughter", "translation": "笑聲", "category": "3. 雙母音與特殊母音家族 (Diphthongs & Special Vowels)", "subcategory": "au / aw (/ɔ/)"},
+  {"id": "035", "word": "restaurant", "translation": "餐廳", "category": "3. 雙母音與特殊母音家族 (Diphthongs & Special Vowels)", "subcategory": "au / aw (/ɔ/)"},
+  {"id": "004", "word": "noise", "translation": "噪音", "category": "3. 雙母音與特殊母音家族 (Diphthongs & Special Vowels)", "subcategory": "oi / oy (/ɔɪ/)"},
+  {"id": "194", "word": "poison", "translation": "毒藥；毒害", "category": "3. 雙母音與特殊母音家族 (Diphthongs & Special Vowels)", "subcategory": "oi / oy (/ɔɪ/)"},
+  {"id": "081", "word": "voyage", "translation": "航行；旅程", "category": "3. 雙母音與特殊母音家族 (Diphthongs & Special Vowels)", "subcategory": "oi / oy (/ɔɪ/)"},
+  {"id": "071", "word": "kangaroo", "translation": "袋鼠", "category": "3. 雙母音與特殊母音家族 (Diphthongs & Special Vowels)", "subcategory": "oo (/ʊ/ 或 /u/)"},
+  {"id": "154", "word": "roof", "translation": "屋頂", "category": "3. 雙母音與特殊母音家族 (Diphthongs & Special Vowels)", "subcategory": "oo (/ʊ/ 或 /u/)"},
+  {"id": "217", "word": "toothpaste", "translation": "牙膏", "category": "3. 雙母音與特殊母音家族 (Diphthongs & Special Vowels)", "subcategory": "oo (/ʊ/ 或 /u/)"},
+  {"id": "216", "word": "foreign", "translation": "外國的", "category": "3. 雙母音與特殊母音家族 (Diphthongs & Special Vowels)", "subcategory": "其他特殊母音 (ei, eigh, all)"},
+  {"id": "120", "word": "neither", "translation": "兩者都不", "category": "3. 雙母音與特殊母音家族 (Diphthongs & Special Vowels)", "subcategory": "其他特殊母音 (ei, eigh, all)"},
+  {"id": "058", "word": "neighbor", "translation": "鄰居", "category": "3. 雙母音與特殊母音家族 (Diphthongs & Special Vowels)", "subcategory": "其他特殊母音 (ei, eigh, all)"},
+  {"id": "117", "word": "wallet", "translation": "錢包", "category": "3. 雙母音與特殊母音家族 (Diphthongs & Special Vowels)", "subcategory": "其他特殊母音 (ei, eigh, all)"},
+  {"id": "014", "word": "alarm", "translation": "鬧鐘；警報", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "ar (/ɑr/)"},
+  {"id": "080", "word": "apartment", "translation": "公寓", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "ar (/ɑr/)"},
+  {"id": "023", "word": "beggar", "translation": "乞丐", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "ar (/ɑr/)"},
+  {"id": "210", "word": "cardboard", "translation": "厚紙板", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "ar (/ɑr/)"},
+  {"id": "196", "word": "quarter", "translation": "四分之一；一刻鐘", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "ar (/ɑr/)"},
+  {"id": "102", "word": "scariest", "translation": "最可怕的", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "ar (/ɑr/)"},
+  {"id": "124", "word": "supermarket", "translation": "超級市場", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "ar (/ɑr/)"},
+  {"id": "176", "word": "alert", "translation": "警覺的；警告", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "er (/ɚ/)"},
+  {"id": "027", "word": "camera", "translation": "相機", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "er (/ɚ/)"},
+  {"id": "146", "word": "centimeter", "translation": "公分", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "er (/ɚ/)"},
+  {"id": "206", "word": "discover", "translation": "發現", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "er (/ɚ/)"},
+  {"id": "149", "word": "fever", "translation": "發燒", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "er (/ɚ/)"},
+  {"id": "169", "word": "government", "translation": "政府", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "er (/ɚ/)"},
+  {"id": "009", "word": "meter", "translation": "公尺", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "er (/ɚ/)"},
+  {"id": "108", "word": "never", "translation": "從不", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "er (/ɚ/)"},
+  {"id": "152", "word": "river", "translation": "河流", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "er (/ɚ/)"},
+  {"id": "076", "word": "slumber", "translation": "睡眠；沉睡", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "er (/ɚ/)"},
+  {"id": "119", "word": "transfer", "translation": "轉移；轉乘", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "er (/ɚ/)"},
+  {"id": "118", "word": "universe", "translation": "宇宙", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "er (/ɚ/)"},
+  {"id": "125", "word": "circuit", "translation": "電路；迴路", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "ir / ur (/ɝ/)"},
+  {"id": "166", "word": "curl", "translation": "捲曲", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "ir / ur (/ɝ/)"},
+  {"id": "215", "word": "dirty", "translation": "骯髒的", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "ir / ur (/ɝ/)"},
+  {"id": "183", "word": "iron", "translation": "鐵；熨燙", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "ir / ur (/ɝ/)"},
+  {"id": "005", "word": "squirrel", "translation": "松鼠", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "ir / ur (/ɝ/)"},
+  {"id": "167", "word": "turkey", "translation": "火雞；土耳其", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "ir / ur (/ɝ/)"},
+  {"id": "123", "word": "urge", "translation": "催促；強烈欲望", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "ir / ur (/ɝ/)"},
+  {"id": "211", "word": "doctor", "translation": "醫生", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "or (/ɔr/)"},
+  {"id": "161", "word": "forecast", "translation": "預報", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "or (/ɔr/)"},
+  {"id": "048", "word": "forget", "translation": "忘記", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "or (/ɔr/)"},
+  {"id": "096", "word": "junior", "translation": "年紀較小的；初級的", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "or (/ɔr/)"},
+  {"id": "150", "word": "north", "translation": "北方", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "or (/ɔr/)"},
+  {"id": "121", "word": "clear", "translation": "清楚的；清澈的", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "ear / air (/ɪr/, /ɛr/, /ɝ/)"},
+  {"id": "018", "word": "dear", "translation": "親愛的", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "ear / air (/ɪr/, /ɛr/, /ɝ/)"},
+  {"id": "144", "word": "disappear", "translation": "消失", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "ear / air (/ɪr/, /ɛr/, /ɝ/)"},
+  {"id": "208", "word": "early", "translation": "早的；提早", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "ear / air (/ɪr/, /ɛr/, /ɝ/)"},
+  {"id": "033", "word": "earth", "translation": "地球；土地", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "ear / air (/ɪr/, /ɛr/, /ɝ/)"},
+  {"id": "020", "word": "haircut", "translation": "理髮", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "ear / air (/ɪr/, /ɛr/, /ɝ/)"},
+  {"id": "095", "word": "heard", "translation": "聽見（過去式）", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "ear / air (/ɪr/, /ɛr/, /ɝ/)"},
+  {"id": "115", "word": "learn", "translation": "學習", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "ear / air (/ɪr/, /ɛr/, /ɝ/)"},
+  {"id": "054", "word": "prepare", "translation": "準備", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "ear / air (/ɪr/, /ɛr/, /ɝ/)"},
+  {"id": "090", "word": "pioneer", "translation": "先驅者", "category": "4. R-控制母音 (R-Controlled Vowels)", "subcategory": "ear / air (/ɪr/, /ɛr/, /ɝ/)"},
+  {"id": "220", "word": "chance", "translation": "機會", "category": "5. 複合子音家族 (Consonant Digraphs)", "subcategory": "ch (/tʃ/)"},
+  {"id": "034", "word": "check", "translation": "檢查", "category": "5. 複合子音家族 (Consonant Digraphs)", "subcategory": "ch (/tʃ/)"},
+  {"id": "043", "word": "chicken", "translation": "雞；雞肉", "category": "5. 複合子音家族 (Consonant Digraphs)", "subcategory": "ch (/tʃ/)"},
+  {"id": "065", "word": "chimney", "translation": "煙囪", "category": "5. 複合子音家族 (Consonant Digraphs)", "subcategory": "ch (/tʃ/)"},
+  {"id": "162", "word": "sandwich", "translation": "三明治", "category": "5. 複合子音家族 (Consonant Digraphs)", "subcategory": "ch (/tʃ/)"},
+  {"id": "179", "word": "brush", "translation": "刷子；刷", "category": "5. 複合子音家族 (Consonant Digraphs)", "subcategory": "sh (/ʃ/)"},
+  {"id": "175", "word": "sharp", "translation": "鋒利的", "category": "5. 複合子音家族 (Consonant Digraphs)", "subcategory": "sh (/ʃ/)"},
+  {"id": "164", "word": "shopkeeper", "translation": "店主", "category": "5. 複合子音家族 (Consonant Digraphs)", "subcategory": "sh (/ʃ/)"},
+  {"id": "104", "word": "everything", "translation": "每件事", "category": "5. 複合子音家族 (Consonant Digraphs)", "subcategory": "th (/θ/ 或 /ð/)"},
+  {"id": "202", "word": "grandfather", "translation": "祖父", "category": "5. 複合子音家族 (Consonant Digraphs)", "subcategory": "th (/θ/ 或 /ð/)"},
+  {"id": "045", "word": "mother", "translation": "母親", "category": "5. 複合子音家族 (Consonant Digraphs)", "subcategory": "th (/θ/ 或 /ð/)"},
+  {"id": "093", "word": "graph", "translation": "圖表", "category": "5. 複合子音家族 (Consonant Digraphs)", "subcategory": "ph (/f/)"},
+  {"id": "106", "word": "telephone", "translation": "電話", "category": "5. 複合子音家族 (Consonant Digraphs)", "subcategory": "ph (/f/)"},
+  {"id": "047", "word": "typhoon", "translation": "颱風", "category": "5. 複合子音家族 (Consonant Digraphs)", "subcategory": "ph (/f/)"},
+  {"id": "100", "word": "wheelchair", "translation": "輪椅", "category": "5. 複合子音家族 (Consonant Digraphs)", "subcategory": "wh (/w/ 或 /h/)"},
+  {"id": "024", "word": "whistle", "translation": "口哨；吹口哨", "category": "5. 複合子音家族 (Consonant Digraphs)", "subcategory": "wh (/w/ 或 /h/)"},
+  {"id": "174", "word": "whistling", "translation": "吹口哨（進行式）", "category": "5. 複合子音家族 (Consonant Digraphs)", "subcategory": "wh (/w/ 或 /h/)"},
+  {"id": "074", "word": "could", "translation": "能夠（can的過去式）", "category": "6. 不發音字母與軟音家族 (Silent Letters & Soft Sounds)", "subcategory": "不發音字母 (Silent gh, wr, kn, l, b, t, d)"},
+  {"id": "109", "word": "crumb", "translation": "麵包屑", "category": "6. 不發音字母與軟音家族 (Silent Letters & Soft Sounds)", "subcategory": "不發音字母 (Silent gh, wr, kn, l, b, t, d)"},
+  {"id": "222", "word": "doubtful", "translation": "可疑的；不確定的", "category": "6. 不發音字母與軟音家族 (Silent Letters & Soft Sounds)", "subcategory": "不發音字母 (Silent gh, wr, kn, l, b, t, d)"},
+  {"id": "010", "word": "ghost", "translation": "鬼魂", "category": "6. 不發音字母與軟音家族 (Silent Letters & Soft Sounds)", "subcategory": "不發音字母 (Silent gh, wr, kn, l, b, t, d)"},
+  {"id": "073", "word": "handsome", "translation": "英俊的", "category": "6. 不發音字母與軟音家族 (Silent Letters & Soft Sounds)", "subcategory": "不發音字母 (Silent gh, wr, kn, l, b, t, d)"},
+  {"id": "103", "word": "knock", "translation": "敲門", "category": "6. 不發音字母與軟音家族 (Silent Letters & Soft Sounds)", "subcategory": "不發音字母 (Silent gh, wr, kn, l, b, t, d)"},
+  {"id": "101", "word": "often", "translation": "經常", "category": "6. 不發音字母與軟音家族 (Silent Letters & Soft Sounds)", "subcategory": "不發音字母 (Silent gh, wr, kn, l, b, t, d)"},
+  {"id": "195", "word": "Wednesday", "translation": "星期三", "category": "6. 不發音字母與軟音家族 (Silent Letters & Soft Sounds)", "subcategory": "不發音字母 (Silent gh, wr, kn, l, b, t, d)"},
+  {"id": "011", "word": "wrist", "translation": "手腕", "category": "6. 不發音字母與軟音家族 (Silent Letters & Soft Sounds)", "subcategory": "不發音字母 (Silent gh, wr, kn, l, b, t, d)"},
+  {"id": "098", "word": "wrong", "translation": "錯誤的", "category": "6. 不發音字母與軟音家族 (Silent Letters & Soft Sounds)", "subcategory": "不發音字母 (Silent gh, wr, kn, l, b, t, d)"},
+  {"id": "002", "word": "cancel", "translation": "取消", "category": "6. 不發音字母與軟音家族 (Silent Letters & Soft Sounds)", "subcategory": "軟音 C (Soft c 發 /s/)"},
+  {"id": "079", "word": "electricity", "translation": "電", "category": "6. 不發音字母與軟音家族 (Silent Letters & Soft Sounds)", "subcategory": "軟音 C (Soft c 發 /s/)"},
+  {"id": "185", "word": "graceful", "translation": "優雅的", "category": "6. 不發音字母與軟音家族 (Silent Letters & Soft Sounds)", "subcategory": "軟音 C (Soft c 發 /s/)"},
+  {"id": "039", "word": "medicine", "translation": "藥；醫學", "category": "6. 不發音字母與軟音家族 (Silent Letters & Soft Sounds)", "subcategory": "軟音 C (Soft c 發 /s/)"},
+  {"id": "050", "word": "officer", "translation": "警官；職員", "category": "6. 不發音字母與軟音家族 (Silent Letters & Soft Sounds)", "subcategory": "軟音 C (Soft c 發 /s/)"},
+  {"id": "209", "word": "bridge", "translation": "橋", "category": "6. 不發音字母與軟音家族 (Silent Letters & Soft Sounds)", "subcategory": "軟音 G (Soft g 發 /dʒ/)"},
+  {"id": "030", "word": "energy", "translation": "能量", "category": "6. 不發音字母與軟音家族 (Silent Letters & Soft Sounds)", "subcategory": "軟音 G (Soft g 發 /dʒ/)"},
+  {"id": "091", "word": "giant", "translation": "巨大的；巨人", "category": "6. 不發音字母與軟音家族 (Silent Letters & Soft Sounds)", "subcategory": "軟音 G (Soft g 發 /dʒ/)"},
+  {"id": "099", "word": "gist", "translation": "要旨；重點", "category": "6. 不發音字母與軟音家族 (Silent Letters & Soft Sounds)", "subcategory": "軟音 G (Soft g 發 /dʒ/)"},
+  {"id": "059", "word": "once", "translation": "一次；曾經", "category": "6. 不發音字母與軟音家族 (Silent Letters & Soft Sounds)", "subcategory": "不規則 Sight Words"},
+  {"id": "143", "word": "comfortable", "translation": "舒適的", "category": "7. 特殊字尾與多音節字家族 (Suffixes & Multi-Syllables)", "subcategory": "-le 字尾"},
+  {"id": "042", "word": "freckle", "translation": "雀斑", "category": "7. 特殊字尾與多音節字家族 (Suffixes & Multi-Syllables)", "subcategory": "-le 字尾"},
+  {"id": "075", "word": "impossible", "translation": "不可能的", "category": "7. 特殊字尾與多音節字家族 (Suffixes & Multi-Syllables)", "subcategory": "-le 字尾"},
+  {"id": "044", "word": "middle", "translation": "中間", "category": "7. 特殊字尾與多音節字家族 (Suffixes & Multi-Syllables)", "subcategory": "-le 字尾"},
+  {"id": "107", "word": "possible", "translation": "可能的", "category": "7. 特殊字尾與多音節字家族 (Suffixes & Multi-Syllables)", "subcategory": "-le 字尾"},
+  {"id": "139", "word": "terrible", "translation": "糟糕的", "category": "7. 特殊字尾與多音節字家族 (Suffixes & Multi-Syllables)", "subcategory": "-le 字尾"},
+  {"id": "001", "word": "adventure", "translation": "冒險", "category": "7. 特殊字尾與多音節字家族 (Suffixes & Multi-Syllables)", "subcategory": "-ture 字尾"},
+  {"id": "136", "word": "future", "translation": "未來", "category": "7. 特殊字尾與多音節字家族 (Suffixes & Multi-Syllables)", "subcategory": "-ture 字尾"},
+  {"id": "111", "word": "signature", "translation": "簽名", "category": "7. 特殊字尾與多音節字家族 (Suffixes & Multi-Syllables)", "subcategory": "-ture 字尾"},
+  {"id": "049", "word": "vulture", "translation": "禿鷹", "category": "7. 特殊字尾與多音節字家族 (Suffixes & Multi-Syllables)", "subcategory": "-ture 字尾"},
+  {"id": "221", "word": "measure", "translation": "測量；措施", "category": "7. 特殊字尾與多音節字家族 (Suffixes & Multi-Syllables)", "subcategory": "-sure 字尾"},
+  {"id": "160", "word": "cottage", "translation": "小屋", "category": "7. 特殊字尾與多音節字家族 (Suffixes & Multi-Syllables)", "subcategory": "-age 字尾"},
+  {"id": "127", "word": "damage", "translation": "損害", "category": "7. 特殊字尾與多音節字家族 (Suffixes & Multi-Syllables)", "subcategory": "-age 字尾"},
+  {"id": "019", "word": "package", "translation": "包裹", "category": "7. 特殊字尾與多音節字家族 (Suffixes & Multi-Syllables)", "subcategory": "-age 字尾"},
+  {"id": "113", "word": "opinion", "translation": "意見", "category": "7. 特殊字尾與多音節字家族 (Suffixes & Multi-Syllables)", "subcategory": "-tion / -sion 字尾"},
+  {"id": "181", "word": "question", "translation": "問題", "category": "7. 特殊字尾與多音節字家族 (Suffixes & Multi-Syllables)", "subcategory": "-tion / -sion 字尾"},
+  {"id": "180", "word": "bakery", "translation": "麵包店", "category": "7. 特殊字尾與多音節字家族 (Suffixes & Multi-Syllables)", "subcategory": "-ary / -ery 字尾"},
+  {"id": "086", "word": "secretary", "translation": "祕書", "category": "7. 特殊字尾與多音節字家族 (Suffixes & Multi-Syllables)", "subcategory": "-ary / -ery 字尾"},
+  {"id": "193", "word": "actively", "translation": "積極地", "category": "7. 特殊字尾與多音節字家族 (Suffixes & Multi-Syllables)", "subcategory": "-ive / -ous 字尾"},
+  {"id": "198", "word": "expensive", "translation": "昂貴的", "category": "7. 特殊字尾與多音節字家族 (Suffixes & Multi-Syllables)", "subcategory": "-ive / -ous 字尾"},
+  {"id": "214", "word": "serious", "translation": "嚴重的；認真的", "category": "7. 特殊字尾與多音節字家族 (Suffixes & Multi-Syllables)", "subcategory": "-ive / -ous 字尾"},
+  {"id": "172", "word": "beautiful", "translation": "美麗的", "category": "7. 特殊字尾與多音節字家族 (Suffixes & Multi-Syllables)", "subcategory": "多音節與其他字尾 (-ly, -al, -ing, -cean, -eau)"},
+  {"id": "190", "word": "consistent", "translation": "一致的；前後一致的", "category": "7. 特殊字尾與多音節字家族 (Suffixes & Multi-Syllables)", "subcategory": "多音節與其他字尾 (-ly, -al, -ing, -cean, -eau)"},
+  {"id": "153", "word": "copying", "translation": "抄寫；複製（進行式）", "category": "7. 特殊字尾與多音節字家族 (Suffixes & Multi-Syllables)", "subcategory": "多音節與其他字尾 (-ly, -al, -ing, -cean, -eau)"},
+  {"id": "060", "word": "libraries", "translation": "圖書館（複數）", "category": "7. 特殊字尾與多音節字家族 (Suffixes & Multi-Syllables)", "subcategory": "多音節與其他字尾 (-ly, -al, -ing, -cean, -eau)"},
+  {"id": "021", "word": "ocean", "translation": "海洋", "category": "7. 特殊字尾與多音節字家族 (Suffixes & Multi-Syllables)", "subcategory": "多音節與其他字尾 (-ly, -al, -ing, -cean, -eau)"},
+  {"id": "142", "word": "tropical", "translation": "熱帶的", "category": "7. 特殊字尾與多音節字家族 (Suffixes & Multi-Syllables)", "subcategory": "多音節與其他字尾 (-ly, -al, -ing, -cean, -eau)"},
+  {"id": "031", "word": "usual", "translation": "平常的", "category": "7. 特殊字尾與多音節字家族 (Suffixes & Multi-Syllables)", "subcategory": "多音節與其他字尾 (-ly, -al, -ing, -cean, -eau)"},
+  {"id": "017", "word": "usually", "translation": "通常", "category": "7. 特殊字尾與多音節字家族 (Suffixes & Multi-Syllables)", "subcategory": "多音節與其他字尾 (-ly, -al, -ing, -cean, -eau)"}
+];
+
+        const { useState, useEffect } = React;
+
+        function App() {
+            const [currentIndex, setCurrentIndex] = useState(0);
+            const [selectedCategory, setSelectedCategory] = useState("All");
+
+            const categories = ["All", ...new Set(wordsData.map(item => item.category))];
+
+            const filteredWords = selectedCategory === "All" 
+                ? wordsData 
+                : wordsData.filter(w => w.category === selectedCategory);
+
+            useEffect(() => {
+                setCurrentIndex(0);
+            }, [selectedCategory]);
+
+            const currentWord = filteredWords[currentIndex] || null;
+
+            const speak = (text) => {
+                if ('speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = 'en-US';
+                    utterance.rate = 0.85; // 稍微放慢語速適合小孩聽
+                    window.speechSynthesis.speak(utterance);
+                }
+            };
+
+            const nextCard = () => {
+                setCurrentIndex((prev) => (prev + 1) % filteredWords.length);
+            };
+
+            const prevCard = () => {
+                setCurrentIndex((prev) => (prev - 1 + filteredWords.length) % filteredWords.length);
+            };
+
+            const randomCard = () => {
+                if (filteredWords.length === 0) return;
+
+                setCurrentIndex((prev) => {
+                    if (filteredWords.length === 1) return 0;
+
+                    let randomIndex;
+                    do {
+                        randomIndex = Math.floor(Math.random() * filteredWords.length);
+                    } while (randomIndex === prev);
+                    return randomIndex;
+                });
+            };
+
+            useEffect(() => {
+                const handleKeyDown = (event) => {
+                    const target = event.target;
+                    if (target instanceof HTMLInputElement ||
+                        target instanceof HTMLTextAreaElement ||
+                        target instanceof HTMLSelectElement) {
+                        return;
+                    }
+
+                    switch (event.key) {
+                        case "ArrowRight":
+                            event.preventDefault();
+                            nextCard();
+                            break;
+                        case "ArrowLeft":
+                            event.preventDefault();
+                            prevCard();
+                            break;
+                        case " ":
+                            event.preventDefault();
+                            if (currentWord) speak(currentWord.word);
+                            break;
+                        case "Enter":
+                            event.preventDefault();
+                            randomCard();
+                            break;
+                    }
+                };
+
+                window.addEventListener("keydown", handleKeyDown);
+                return () => window.removeEventListener("keydown", handleKeyDown);
+            }, [filteredWords, currentIndex]);
+
+            if (!currentWord) return <div className="text-2xl font-bold p-8">Loading...</div>;
+
+            return (
+                <div className="min-h-screen flex flex-col items-center justify-center p-4">
+                    <h1 className="text-4xl md:text-5xl font-extrabold text-blue-600 mb-6 drop-shadow-md text-center">
+                        🌟 2026 拼字大明星 🌟
+                    </h1>
+                    
+                    <div className="mb-6 w-full max-w-md">
+                        <label className="block text-sm font-bold text-gray-700 mb-2">選擇學習分類：</label>
+                        <select 
+                            className="w-full p-3 rounded-2xl border-4 border-blue-300 bg-white text-lg font-bold text-gray-700 shadow-sm focus:outline-none focus:border-blue-500 transition-colors"
+                            value={selectedCategory}
+                            onChange={(e) => setSelectedCategory(e.target.value)}
+                        >
+                            <option value="All">🌈 全部單字 (共 225 字)</option>
+                            {categories.filter(c => c !== "All").map(cat => (
+                                <option key={cat} value={cat}>{cat}</option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="card-container w-full max-w-2xl relative">
+                        <div className="bg-white rounded-[2rem] shadow-2xl w-full p-8 relative overflow-hidden border-8 border-yellow-400 flex flex-col items-center">
+                            
+                            {/* 編號標籤 */}
+                            <div className="absolute top-4 left-4 bg-yellow-200 text-yellow-800 px-4 py-1 rounded-full text-sm font-black shadow-sm">
+                                #{currentWord.id}
+                            </div>
+                            
+                            {/* 分類標籤 */}
+                            <div className="mt-8 mb-2 text-center w-full">
+                                <p className="text-sm font-black text-blue-500 mb-2">{currentWord.category}</p>
+                                <p className="text-xs font-bold text-gray-600 bg-gray-100 inline-block px-4 py-1.5 rounded-full shadow-inner">
+                                    {currentWord.subcategory}
+                                </p>
+                            </div>
+
+                            {/* 英文單字 */}
+                            <h2 className="text-6xl md:text-7xl font-black text-gray-800 my-6 tracking-wide drop-shadow-sm text-center w-full break-words">
+                                {currentWord.word}
+                            </h2>
+                            
+                            {/* 發音按鈕 */}
+                            <button 
+                                onClick={() => speak(currentWord.word)}
+                                className="btn-press bg-blue-500 hover:bg-blue-600 text-white p-5 rounded-full shadow-lg transition-transform mb-6 flex items-center justify-center border-4 border-blue-400"
+                            >
+                                <i data-lucide="volume-2" className="w-10 h-10"></i>
+                            </button>
+
+                            {/* 中文翻譯 */}
+                            <div className="w-full bg-green-100 rounded-3xl p-5 text-center border-4 border-green-300 shadow-inner">
+                                <p className="text-3xl font-black text-green-700">{currentWord.translation}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* 控制按鈕 */}
+                    <div className="flex gap-4 mt-8 w-full max-w-md justify-between items-center bg-white p-3 rounded-full shadow-lg border-2 border-gray-100">
+                        <button 
+                            onClick={prevCard}
+                            className="btn-press flex items-center justify-center bg-gray-100 text-gray-700 w-14 h-14 rounded-full font-bold shadow-sm hover:bg-gray-200 transition-colors"
+                        >
+                            <i data-lucide="chevron-left" className="w-8 h-8"></i>
+                        </button>
+                        <span className="text-xl font-black text-gray-600 bg-gray-50 px-6 py-2 rounded-full">
+                            {currentIndex + 1} / {filteredWords.length}
+                        </span>
+                        <button 
+                            onClick={nextCard}
+                            className="btn-press flex items-center justify-center bg-blue-500 text-white w-14 h-14 rounded-full font-bold shadow-sm hover:bg-blue-600 transition-colors"
+                        >
+                            <i data-lucide="chevron-right" className="w-8 h-8"></i>
+                        </button>
+                    </div>
+                    <p className="mt-4 text-sm font-bold text-gray-500 text-center">
+                        鍵盤：← 上一個　→ 下一個　空白鍵 發音　Enter 隨機單字
+                    </p>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+
+        // 初始化圖示
+        setTimeout(() => { lucide.createIcons(); }, 100);
+    </script>
+</body>
+</html>
