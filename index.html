@@ -262,6 +262,7 @@
         function App() {
             const [currentIndex, setCurrentIndex] = useState(0);
             const [selectedCategory, setSelectedCategory] = useState("All");
+            const audioRef = React.useRef(null);
 
             const categories = ["All", ...new Set(wordsData.map(item => item.category))];
 
@@ -275,14 +276,48 @@
 
             const currentWord = filteredWords[currentIndex] || null;
 
-            const speak = (text) => {
+            const speakWithSynthesis = (text) => {
                 if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
                     const utterance = new SpeechSynthesisUtterance(text);
                     utterance.lang = 'en-US';
                     utterance.rate = 0.85; // 稍微放慢語速適合小孩聽
                     window.speechSynthesis.speak(utterance);
                 }
             };
+
+            const stopPlayback = () => {
+                if (audioRef.current) {
+                    audioRef.current.pause();
+                    audioRef.current.currentTime = 0;
+                    audioRef.current = null;
+                }
+
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                }
+            };
+
+            const speak = (text) => {
+                stopPlayback();
+
+                const audio = new Audio(
+                    new URL(`./audio/${encodeURIComponent(text)}.mp3`, document.baseURI).href
+                );
+                audioRef.current = audio;
+
+                const useFallback = () => {
+                    if (audioRef.current !== audio) return;
+
+                    audioRef.current = null;
+                    speakWithSynthesis(text);
+                };
+
+                audio.addEventListener('error', useFallback, { once: true });
+                audio.play().catch(useFallback);
+            };
+
+            useEffect(() => () => stopPlayback(), []);
 
             const nextCard = () => {
                 setCurrentIndex((prev) => (prev + 1) % filteredWords.length);
